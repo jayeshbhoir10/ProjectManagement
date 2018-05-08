@@ -10,67 +10,45 @@
 <title>Insert title here</title>
 </head>
 <body>
-<center>
-			<c:if test="${not empty employee.userName}">
-				<c:url value="/employee/logout" var="logOutUrl" scope="session"/>
-					
-				
-				
-				<a href="${ session.logOutUrl }">Logout</a>
-			</c:if>
-			</center>
-
-	<table border="1" align="center">
-		<h1>
-			<center>UPDATE PROJECT</center></h1>
-			
-			<center>
-			<c:if test="${ employee.designation eq 'ADMINISTRATOR' }">
-				 <a href="/user/add">Add User</a>
-				<a href="/task/viewTask">View Task</a>
-			</c:if>
-			
-			<c:if test="${ employee.designation eq 'PROJECT_MANAGER' }">
-				<a href="/project/add">Add Project</a>
-				<a href="/task/add">Add Task</a> 
-				<a href="/task/viewTask">View Task</a>
-			</c:if>
-			</center>
+			<h3><center>UPDATE PROJECT</center></h3>
 		
 		<spring:url value="/project/editproject" var="projectAddUrl" />
-		<form:form modelAttribute="proj" action="${ projectAddUrl }">
+		<form:form modelAttribute="project" action="${ projectAddUrl }">
+		
+		<table border="1" align="center" cellpadding="5" cellspacing="5">
 			<tr>
-				<td><label>Project Name:</label></td>
+				<td>Project Name</td>
 				<td><form:input type="text" path="projectName" id="projectname" /><br />
 				</td>
 			</tr>
 			<%-- <form:checkbox path="checkDate" /> --%>
 			<tr>
-				<td><label>Start Date</label></td>
-				<td><form:input type="text"  path="startDate" id="startdate" name="startDate" /></td>
+				<td>Start Date</td>
+				<td><input type="text"  name="projectStartDate" id="startdate"  /></td>
 			</tr>
 			<tr>
-				<td><label>End Date</label></td>
-				<td><form:input type="text" path="endDate" name="endDate"/><br />
+				<td>End Date</td>
+				<td><input type="text" name="projectEndDate" /><br />
 				</td>
 			</tr>
 			<tr>
-				<td><label>Priority</label></td>
+				<td>Priority</td>
 				<td><form:input type="range" path="priority" maxlength="100" /><br /></td>
 			</tr>
 			<tr>
-				<td><label>Manager</label></td>
-				<td><input type="text" name="managerName" value="${ sessionScope.employee.userName }" readonly="readonly"> <span id="merror" style="color: red">*</span><br />
+				<td>Manager</td>
+				<td><input type="text" name="employee" value="${ sessionScope.employee.userName }" readonly="readonly"> <span id="merror" style="color: red"></span><br />
 				</td>
 			</tr>
-			<tr>
+			<tr><td></td>
 				<td><input type="hidden" name="projectId" value="${ proj.projectId }"> 
-				<input type="submit" value="Update"> <input type="reset" value="RESET"></td>
+				<input type="submit" value="ADD"> <input type="reset" value="RESET"></td>
 			</tr>
-
+			
+			</table>
 
 		</form:form>
-	</table>
+
 
 </body>
 </html>

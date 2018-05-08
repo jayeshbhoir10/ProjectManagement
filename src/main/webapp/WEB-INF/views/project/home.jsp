@@ -8,27 +8,22 @@
 <title>Insert title here</title>
 </head>
 <body>
-            
+<link rel="stylesheet" href="/resources/loginForm/css/style.css">
+        <dev1><center><h1><b>Project Manager</b></h1></h1></center></dev1>
 			<center>
-			<c:if test="${ employee.designation eq 'ADMINISTRATOR' }">
-				 <a href="/user/add">Add User</a>
-				<a href="/task/viewTask">View Task</a>
-				<a href="/employee/logout" scope="session"/>logout</a>
-					<%-- <a href="${ session.logOutUrl }">Logout</a> --%>
+				<c:if test="${ employee.designation eq 'ADMINISTRATOR' }">
+				 <span style="padding-left:20px"><a href="/user/add"><b>Add User</b></a></span>
+				<span style="padding-left:20px"><a href="/task/viewTask"><b>View Task</b></a></span>
+				<span style="padding-left:20px"><a href="/employee/logout" scope="session"><b>Logout</b></a></span>
 			</c:if>
 			
 			<c:if test="${ employee.designation eq 'PROJECT_MANAGER' }">
-				<a href="/project/add">Add Project</a>
-				<a href="/task/add">Add Task</a> 
-				<a href="/task/viewTask">View Task</a>
-				<a href="/employee/logout" scope="session"/>logout</a>
+				<span style="padding-left:20px"><a href="/project/add"><b>Add Project</b></a></span>
+				<span style="padding-left:20px"><a href="/task/add"><b>Add Task</b></a> </span>
+				<span style="padding-left:20px"><a href="/task/viewTask"><b>View Task</b></a></span>
+				<span style="padding-left:20px"><a href="/employee/logout" scope="session"><b>Logout</b></a></span>
 			</c:if>
-			</center>
-			<center>
-			<c:if test="${not empty employee.userName}">
-				<%-- <c:url value="/employee/logout" var="logOutUrl" scope="session"/>
-					<a href="${ session.logOutUrl }">Logout</a> --%>
-			</c:if>
+
 			</center>
 </body>
 </html>

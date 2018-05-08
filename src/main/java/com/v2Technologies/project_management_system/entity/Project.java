@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="TBL_PROJECT")
@@ -24,9 +26,11 @@ public class Project
 		@Column(name="PROJECT_NAME",unique=true,nullable=false)
 		String projectName;
 		
+		@Temporal(TemporalType.DATE)
 		@Column(name="PROJ_START_DATE",nullable=false)
-		Date projectStartDate;
+	    Date projectStartDate;
 		
+		@Temporal(TemporalType.DATE)
 		@Column(name="PROJ_END_DATE",nullable=false)
 		Date projectEndDate;
 		

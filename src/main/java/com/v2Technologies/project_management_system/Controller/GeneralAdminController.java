@@ -74,24 +74,25 @@ public class GeneralAdminController {
 		Company company=new Company();
 		m.addAttribute("company", company);
 		System.out.println("hiiiiiiiiiiiiiii");
-		return "Company/GeneralAdminLogin";
+		return "company/GeneralAdminLogin";
 	}
 	
 	
 	@PostMapping("/addAdminCompany")
 	public String checkAdminCredentials(@ModelAttribute GeneralAdmin generalAdmin,Company company, Model m)
 	{
-		System.out.println("++++++++++++"+generalAdmin);
 		GeneralAdmin general=gar.findByAdminNameAndPassword(generalAdmin.getAdminName(), generalAdmin.getPassword());
+		System.out.println(generalAdmin.getAdminName()+""+generalAdmin.getPassword());
 		if(general!=null)
 		{
+			System.out.println(general+"---"+"++");
 			Company c=new Company();
 			m.addAttribute("company", c);
-			return "Company/AddAdmin&Company";
+			return "company/AddAdmin&Company";
 		}
 		else
 		{
-			return "Company/GeneralAdminLogin";
+			return "company/GeneralAdminLogin";
 		}
 	}
 	
@@ -100,7 +101,7 @@ public class GeneralAdminController {
 	{
 		crepo.save(company);
 		System.out.println("hellooooooo");
-		return "Company/AddAdmin&Company";
+		return "company/AddAdmin&Company";
 	}
 	
 	@GetMapping("/companyAdminLogin")
@@ -115,7 +116,7 @@ public class GeneralAdminController {
 		}
 		m.addAttribute("company", company);
 		m.addAttribute("companyNames", companyNames);
-		return "Company/companyAdminLogin";
+		return "company/companyAdminLogin";
 	}
 	
 	/*@PostMapping("/loginAdminCompany")
@@ -149,7 +150,7 @@ public class GeneralAdminController {
 	public String logout(HttpSession s)
 	{
 		s.invalidate();
-		return "Company/GeneralAdminLogin";
+		return "company/GeneralAdminLogin";
 	}
 
 	

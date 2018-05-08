@@ -1,5 +1,6 @@
 package com.v2Technologies.project_management_system.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,9 +15,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name="TBL_EMPLOYEE")
-public class Employee 
+public class Employee implements Comparable<Employee> , Serializable
 {
   
 	@Id
@@ -171,5 +173,11 @@ public class Employee
 	{
 		tasks.add(task);
 		task.allocateEmployee(this);
+	}
+
+	@Override
+	public int compareTo(Employee emp) {
+		
+		return employeeName.compareTo(emp.getEmployeeName());
 	}
 }
