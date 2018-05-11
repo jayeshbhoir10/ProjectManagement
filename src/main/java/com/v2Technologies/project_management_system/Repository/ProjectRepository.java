@@ -14,4 +14,6 @@ public interface ProjectRepository extends JpaRepository<Project,java.lang.Long>
 	public List<Project> findAllByOrderByPriorityAsc();
 	public List<Project> findAllByOrderByProjectStartDateAsc();
 	public List<Project> findAllByOrderByProjectEndDateAsc();
+	//public Project findByProjectName(String projectName);
+
 }

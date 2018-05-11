@@ -1,6 +1,7 @@
 package com.v2Technologies.project_management_system.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,25 @@ public class EmployeeServiceImpl implements EmployeeService
 		// TODO Auto-generated method stub
 		return employeerepo.findAll();
 	}
+
+	@Override
+	public List<Employee> findByEmployeeName(String employeeName) {
+		// TODO Auto-generated method stub
+		return employeerepo.findByEmployeeName(employeeName);
+	}
+
+	@Override
+	public Employee findByEmailId(String emailId) {
+		// TODO Auto-generated method stub
+		return employeerepo.findByEmailId(emailId);
+	}
+
+	@Override
+	public Optional<Employee> findById(Long id) {
+		// TODO Auto-generated method stub
+		return employeerepo.findById(id);
+	}
+
+	
 
 }

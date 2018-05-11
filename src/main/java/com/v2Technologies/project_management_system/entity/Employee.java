@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="TBL_EMPLOYEE")
-public class Employee implements Comparable<Employee> , Serializable
+public class Employee implements  Serializable
 {
   
 	@Id
@@ -33,9 +33,7 @@ public class Employee implements Comparable<Employee> , Serializable
     @JoinColumn(name="DESIGNATION", nullable=false)
 	private Designation designation;
 	
-	 
 	
-
 	@Column(name="EMAIL_ID",unique=true,nullable=false)
 	private String emailId;
 	
@@ -53,11 +51,6 @@ public class Employee implements Comparable<Employee> , Serializable
 	Set<Task> tasks;
 	
 	
-	
-	
-	
-	
-
 	public void setEmployeeId(long employeeId) {
 		this.employeeId = employeeId;
 	}
@@ -76,11 +69,12 @@ public class Employee implements Comparable<Employee> , Serializable
 		this.tasks=new HashSet<>();
 	}
 
-	public Employee(String employeeName, Designation designation, String emailId, String password) {
-		super();
+	public Employee(String employeeName, Designation designation, String emailId, String password,Company company) {
+		
 
 		this.employeeName = employeeName;
 		this.designation = designation;
+		this.company=company;
 		this.emailId = emailId;
 		this.password = password;
 		this.projects=new HashSet<>();
@@ -175,9 +169,4 @@ public class Employee implements Comparable<Employee> , Serializable
 		task.allocateEmployee(this);
 	}
 
-	@Override
-	public int compareTo(Employee emp) {
-		
-		return employeeName.compareTo(emp.getEmployeeName());
-	}
 }

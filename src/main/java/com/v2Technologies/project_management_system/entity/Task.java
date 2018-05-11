@@ -100,9 +100,7 @@ public class Task
 		this.status = status;
 	}
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="EMPLOYEE_ID_FK")
-	private Employee employee;
+	
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="PROJECT_ID_FK")
@@ -115,6 +113,10 @@ public class Task
 	public void setAssignProject(Project assignProject) {
 		this.assignProject = assignProject;
 	}
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="EMPLOYEE_ID_FK")
+	private Employee employee;
 
 	public Employee getEmployee() {
 		return employee;
@@ -128,5 +130,14 @@ public class Task
 	{
 		employee=employee2;
 	}
+
+	@Override
+	public String toString() {
+		return "Task [taskId=" + taskId + ", taskName=" + taskName + ", taskStartDate=" + taskStartDate
+				+ ", taskEndDate=" + taskEndDate + ", priority=" + priority + ", status=" + status + ", assignProject="
+				+ assignProject + ", employee=" + employee + "]";
+	}
+	
+	
 	
 }

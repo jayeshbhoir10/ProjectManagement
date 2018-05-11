@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.v2Technologies.project_management_system.Repository.CompanyRepository;
 import com.v2Technologies.project_management_system.Repository.EmployeeRepository;
 import com.v2Technologies.project_management_system.Repository.GeneralAdminRepository;
+import com.v2Technologies.project_management_system.Service.DesignationService;
 import com.v2Technologies.project_management_system.Service.GeneralAdminService;
 import com.v2Technologies.project_management_system.entity.Company;
+import com.v2Technologies.project_management_system.entity.Designation;
+import com.v2Technologies.project_management_system.entity.Employee;
 import com.v2Technologies.project_management_system.entity.GeneralAdmin;
 
 
@@ -36,13 +39,18 @@ public class GeneralAdminController {
 	CompanyRepository crepo;
 	
 	@Autowired
+	DesignationService designationService;
+	
+	@Autowired
 	EmployeeRepository erepo;
 	
 	@GetMapping("/add")
 	public String showAddProject(Model m) {
 	
+		Employee employee=new Employee();
 		
 		Company company=new Company();
+		Designation designation=new Designation();
 		List<Company> li=crepo.findAll();
 		List<String> companyNames=new ArrayList<>();
 		
@@ -50,7 +58,19 @@ public class GeneralAdminController {
 		{
 			companyNames.add(c.getCompanyName());
 		}
-		m.addAttribute("company", company);
+		
+		List<Designation> designations=designationService.findAll();
+		List<String> designationNames=new ArrayList<>();
+		
+		for (Designation d : designations) 
+		{
+			designationNames.add(designation.getDesignation());
+		}
+		
+		m.addAttribute("employee", employee);
+	//m.addAttribute("destinations", designation);
+		//m.addAttribute("company", company);
+		m.addAttribute("designations", designationNames);
 		m.addAttribute("companyNames", companyNames);
 	
 		return "Home/home";

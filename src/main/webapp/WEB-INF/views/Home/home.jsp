@@ -10,8 +10,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<spring:url value="/Company/add" var="CompanyAddUrl" />
-	<form:form modelAttribute="company" action="${ projectAddUrl }">
+	<spring:url value="/comapny/add" var="companyEmployeeloginUrl" />
+	<form:form modelAttribute="employee" action="${ companyEmployeeloginUrl }">
 		<center>
 			<h1>PROJECT MANAGEMENT SYSTEM</h1>
 			
@@ -30,7 +30,7 @@
 		<table border="1" align="center" cellpadding="5" cellspacing="5">
 			<tr>
 				<td>Company Name:</td>
-				<td><form:select id="companyName" path="companyName">
+				<td><form:select id="companyName" path="company">
 						<form:options items="${companyNames}" />
 					</form:select></td>
 
@@ -38,7 +38,7 @@
 
 			<tr>
 				<td>Employee Name</td>
-				<td><form:input path="adminName" id="adminName" type="text"
+				<td><form:input path="employeeName" id="adminName" type="text"
 						onblur="addUser()" /> <span id="fnerror" style="color: red"></span></td>
 			</tr>
 			<tr>
@@ -48,11 +48,11 @@
 			</tr>
 			<%-- <tr>
 				<td>Role</td>
-				<td><form:select id="designations" path="designations">
+				<td><form:select id="designations" path="designation.designation">
 						<form:options items="${designations}" />
 					</form:select></td>
-			</tr> --%>
-
+			</tr>
+ --%>
 			<tr align="center"><td></td><td>
 				<input type="submit" name="Login">
 				<input type="reset" name="Reset"></td>

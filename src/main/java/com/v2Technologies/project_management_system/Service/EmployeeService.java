@@ -1,6 +1,7 @@
 package com.v2Technologies.project_management_system.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -10,4 +11,10 @@ public interface EmployeeService
 {
 	public void addEmployee(Employee employee);
 	public List<Employee> findAll();
+	List<Employee> findByEmployeeName(String employeeName);
+	Employee findByEmailId(String emailId);
+	Optional<Employee> findById(Long id);
+	//public void deleteById(Long Id);
+	
+	
 }

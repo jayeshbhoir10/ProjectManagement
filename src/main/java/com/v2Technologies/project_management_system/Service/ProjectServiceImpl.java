@@ -1,6 +1,7 @@
 package com.v2Technologies.project_management_system.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,5 +50,18 @@ public class ProjectServiceImpl implements ProjectService
 		// TODO Auto-generated method stub
 		return projectRepo.findAllByOrderByProjectEndDateAsc();
 	}
+	
+	@Override
+	public Optional<Project> findById(long projectId)
+	{
+		return projectRepo.findById(projectId);
+	}
+	
+	@Override
+	public void save(Project project) {
+		// TODO Auto-generated method stub
+		projectRepo.save(project);
+	}
+	
 
 }

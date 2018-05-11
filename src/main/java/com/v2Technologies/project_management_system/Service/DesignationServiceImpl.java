@@ -9,7 +9,7 @@ import com.v2Technologies.project_management_system.Repository.DesignationReposi
 import com.v2Technologies.project_management_system.entity.Designation;
 
 @Service
-public class DestinationServiceImpl implements DestinationService 
+public class DesignationServiceImpl implements DesignationService 
 {
 
 	@Autowired

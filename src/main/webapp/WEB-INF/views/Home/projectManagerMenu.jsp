@@ -4,17 +4,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Admin Menu</title>
+<title>Insert title here</title>
 </head>
 
 <body>
 		<center>
-			<h1><b>Project Manager</b></h1>
+			<h1><b>PROJECT MANAGER</b></h1>
 		</center>
 		<center>
-			<h2>Welcome to Project Management Project</h2>
-		<span style="padding-left: 20px"><a href="/employee/viewEmployeePage"><b>Add Employee</b></a></span>
-		 <span style="padding-left: 20px"><a href="/task/viewTask"><b>View Task</b></a></span>
+			<h2>Welcome to Project Management System</h2>
+		<span style="padding-left: 20px"><a href="/project/project"><b>Add Project</b></a></span>
+		<span style="padding-left: 20px"><a href="/task/viewTask"><b>Add Task</b></a></span>
+		 <span style="padding-left: 20px"><a href="/task/viewAllTask"><b>View Task</b></a></span>
 		  <span style="padding-left: 20px"><a href="/employee/logout"><b>Logout</b></a></span>
 		  </center>
 </body>

@@ -46,7 +46,6 @@
 			<thead>
 				<tr>
 					<th>Task</th>
-					<th>Parent_Task</th>
 					<th>Priority</th>
 					<th>Start_Date</th>
 					<th>End_Date</th>
@@ -59,10 +58,6 @@
 						
 						<td>
 						<c:out value="${ t.taskName }"></c:out>
-						</td>
-					
-						<td>
-						<c:out value="${ t.parentTaskId }"></c:out>
 						</td>
 						<td>
 						<c:out value="${ t.priority }"></c:out>

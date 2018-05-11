@@ -11,13 +11,13 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
+
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.v2Technologies.project_management_system.DTO.ProjectDTO;
+import com.v2Technologies.project_management_system.Service.EmailSendService;
 import com.v2Technologies.project_management_system.Service.ProjectService;
 import com.v2Technologies.project_management_system.entity.Project;
 
@@ -37,6 +38,9 @@ public class ProjectController {
 	@Autowired
 	ProjectService projectService;
 	
+	@Autowired
+	EmailSendService emailSendController;
+	
 	
 	@GetMapping("project")
 	public String showProjectScreen(Model m)
@@ -46,6 +50,16 @@ public class ProjectController {
 		return "project/addProject";
 	}
 	
+	@GetMapping("/projectManagerMenu")
+	public String projectManagerMenu( @ModelAttribute("project") Project project,Model m )
+	{
+	   
+	    m.addAttribute("project", project);
+	   
+	    
+	    return "Home/projectManagerMenu";
+	}
+
 	@PostMapping("/add")
 	public String saveProject(@ModelAttribute ProjectDTO project,BindingResult bindingResult,Model m,HttpServletRequest request)
 	{
@@ -54,7 +68,7 @@ public class ProjectController {
 		String startDate=request.getParameter("projectStartDate");
 		if(startDate==null)
 		{
-			startDate=convertDateToString(project.getProjectEndDate());
+			startDate=convertDateToString(project.getProjectStartDate());
 		}
 		project.setProjectStartDate(convertDate(startDate));
 		project2.setProjectStartDate(project.getProjectStartDate());
@@ -69,11 +83,14 @@ public class ProjectController {
 		
 		project2.setProjectName(project.getProjectName());
 		project2.setPriority(project.getPriority());
-		project2.setEmployee(project.getEmployee());
+		project2.getEmployee().setEmailId(project.getEmployee().getEmailId());
 		
 		System.out.println(project2);
 		
 		projectService.addproject(project2);
+		
+		//emailSendController.mailSendWhenProjectAdd(project2.getEmployee().getEmailId(), project2);
+		
 		return "redirect:/project/projects";
 	}
 	
@@ -120,6 +137,29 @@ public class ProjectController {
 	{
 		List<Project> projects=projectService.findAllByOrderByPriorityAsc();
 		m.addAttribute("projects",projects);
+		return "project/allProjects";
+	}
+	
+	
+	@PostMapping("/showEditProject")
+	public String showEditProjectPage(@RequestParam("projectId")long projectId,Model m)
+	{
+		System.out.println("projectID===="+projectId);
+		Optional<Project> p=projectService.findById(projectId);
+		Project project=p.get();
+		m.addAttribute("project", project);
+		System.out.println("Project======");
+		return "project/updateProject";
+	}
+	
+	@PostMapping("/editproject")
+	public String editProject(@ModelAttribute("project") ProjectDTO  proj, BindingResult bindingResult, Model m) {
+		Project p = proj.getCurrent();
+		//m.addAttribute("checkDate", true);
+		m.addAttribute("project", p);
+		projectService.save(p);
+		List<Project> li = (List<Project>) projectService.findAll();
+		m.addAttribute("projects", li);
 		return "project/allProjects";
 	}
 	

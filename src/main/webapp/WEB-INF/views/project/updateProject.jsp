@@ -24,12 +24,14 @@
 			<%-- <form:checkbox path="checkDate" /> --%>
 			<tr>
 				<td>Start Date</td>
-				<td><input type="text"  name="projectStartDate" id="startdate"  /></td>
+				<td><form:input type="date" id="startDate" path="projectStartDate" placeholder="YYYY-MM-DD" onblur="addProject()" />
+				 <span id="sdate" style="color: red"></span>
+				</td>
 			</tr>
 			<tr>
 				<td>End Date</td>
-				<td><input type="text" name="projectEndDate" /><br />
-				</td>
+				<td><form:input type="date"  id="endDate" path="projectEndDate" placeholder="YYYY-MM-DD" onblur="addProject()" />
+				<span id="edate" style="color: red" ></td>
 			</tr>
 			<tr>
 				<td>Priority</td>
@@ -37,7 +39,7 @@
 			</tr>
 			<tr>
 				<td>Manager</td>
-				<td><input type="text" name="employee" value="${ sessionScope.employee.userName }" readonly="readonly"> <span id="merror" style="color: red"></span><br />
+				<td><input type="text" name="employee" value="${ sessionScope.employee.userName }" readonly="readonly" > <span id="merror" style="color: red"></span><br />
 				</td>
 			</tr>
 			<tr><td></td>

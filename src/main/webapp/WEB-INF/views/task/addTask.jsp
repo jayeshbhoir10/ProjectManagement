@@ -56,32 +56,6 @@
 <body>
 	<h3 align="center">Add Task</h3>
 
-	<center>
-		<a href="/task/home">HOME</a><br>
-		<a href="/employee/logout">Logout</a>
-		<%-- <c:if test="${not empty employee.userName}">
-			<c:url value="/employee/logout" var="logOutUrl" scope="session" />
-
-
-
-			<a href="${ session.logOutUrl }">Logout</a>
-		</c:if>
- --%>
-
-
-
-		<c:if test="${ employee.designation eq 'ADMINISTRATOR' }">
-			<a href="/user/add">Add User</a>
-			<a href="/task/viewTask">View Task</a>
-		</c:if>
-
-		<c:if test="${ employee.designation eq 'PROJECT_MANAGER' }">
-			<a href="/project/add">Add Project</a>
-			<a href="/task/add">Add Task</a>
-			<a href="/task/viewTask">View Task</a>
-		</c:if>
-
-	</center>
 	<spring:url value="/task/addTask" var="TaskAddUrl" />
 	<form:form modelAttribute="task" action="${ TaskAddUrl }"
 		onSubmit="return addTask()">
@@ -92,8 +66,8 @@
 				<th>PROJECT MANAGER</th>
 			</tr>
 			<tr>
-				<td><label>project:</label> <form:select
-						path="projectEntity.projectName">
+				<td><label>project:</label> 
+				<form:select path="assignProject.projectName">
 						<form:options items="${ projectNames }" />
 					</form:select>
 			</tr>
@@ -104,32 +78,29 @@
 
 			</tr>
 			<tr>
-				<td><form:checkbox path="status" value="Parent Task" /><label>Parent
+				<td><form:checkbox path="status" value="Status" /><label>Parent
 						Task</label></td>
 			</tr>
 			<tr>
 				<td><label>Priority:</label> <form:input type="range"
 						minlength="0" maxlength="30" path="priority" /></td>
 			</tr>
+
 			<tr>
-				<td><label>Parent-Task</label> <form:input type="text"
-						path="parentTaskId" size="25" maxlength="50" id="parentTaskId"
-						class="field" /><span id="parenterror" style="color: red">*</span></td>
-			</tr>
-			<tr>
-				<td><label>Start-Date</label> <form:input type="text"
+				<td><label>Start-Date</label> <form:input type="date"
 						path="taskStartDate" id="taskStartDate" /><span id="sd"
 					style="color: red">*</span></td>
 			</tr>
 			<tr>
-				<td><label>End-Date</label> <form:input type="text"
+				<td><label>End-Date</label> <form:input type="date"
 						path="taskEndDate" id="taskEndDate" /><span id="ed"
 					style="color: red">*</span></td>
 			</tr>
 			<tr>
-				<td><label>User</label><input type="text" name="userName"
-					class="field" size="25" maxlength="50"
-					value="${ employee.userName }" readonly="readonly"></td>
+				<td><label>Employee</label>
+				<form:select path="employee.emailId">
+						<form:options items="${employeeIds}" />
+					</form:select>
 			</tr>
 			<tr>
 				<td><input type="submit" value="addTask" /> 

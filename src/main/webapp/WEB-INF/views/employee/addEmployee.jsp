@@ -65,7 +65,7 @@
 				<tr>
 				<td>Company Name</td>
 				<%-- <td><form:input path="company" type="text" id="companyName" onblur="addUser()" />  --%>
-				<td><input type="text" value="${ sessionScope.company.companyName }" readonly="readonly">
+				<td><form:input type="text" path="company.companyName" value="${ sessionScope.company.companyName }" readonly="readonly" />
 				 <span
 						id="cmp" style="color: red"></span></td>
 				</tr>

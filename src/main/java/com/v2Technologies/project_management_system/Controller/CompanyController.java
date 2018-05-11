@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @Controller
 @RequestMapping("/company")
 @SessionAttributes("company")
-public class CompanyController {
-	
-	
+public class CompanyController
+{
 
 }

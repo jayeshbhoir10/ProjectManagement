@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.v2Technologies.project_management_system.Repository.CompanyRepository;
 import com.v2Technologies.project_management_system.Repository.DesignationRepository;
 import com.v2Technologies.project_management_system.Repository.EmployeeRepository;
+import com.v2Technologies.project_management_system.Service.EmailSendService;
+import com.v2Technologies.project_management_system.Service.EmployeeService;
 import com.v2Technologies.project_management_system.entity.Company;
 import com.v2Technologies.project_management_system.entity.Designation;
 import com.v2Technologies.project_management_system.entity.Employee;
@@ -43,16 +46,19 @@ public class EmployeeController {
 	DesignationRepository desiRepo;
 	
 	@Autowired
-	EmployeeRepository empRepo;
+	EmployeeService employeeService;
+
+	@Autowired
+	EmployeeRepository employeerepo; 
 	
-	
-	
-	
+	@Autowired
+	EmailSendService emailSendService;
+		
 	
 	@PostMapping("/search")
 	public String searchByName(@RequestParam("searchName") String Name,Model m)
 	{
-		List<Employee> li = empRepo.findByemployeeName(Name);
+		List<Employee> li = employeeService.findByEmployeeName(Name);
 		m.addAttribute("employees", li);
 		return "employee/allEmployee";
 	}
@@ -61,8 +67,8 @@ public class EmployeeController {
 	public String sortByName(Model m)
 	{
 
-		List<Employee> uListOntname=(List<Employee>) empRepo.findAll();
-		Collections.sort(uListOntname);
+		List<Employee> uListOntname=(List<Employee>) employeeService.findAll();
+	
 		System.out.println(uListOntname);
 		m.addAttribute("employees",uListOntname);
 		return "employee/allEmployee";
@@ -82,7 +88,7 @@ public class EmployeeController {
 		m.addAttribute("emp", e);
 		m.addAttribute("designations", desi);
 		
-		Optional<Employee> u = empRepo.findById(eId);
+		Optional<Employee> u = employeeService.findById(eId);
 		Employee emp = u.get();
 		System.out.println("=====================================");
 		System.out.println(emp);
@@ -93,28 +99,45 @@ public class EmployeeController {
 	}
 	
 	//edit&save
-	@PostMapping("/editEmployee")
+	@RequestMapping(value="/editEmployee",method=RequestMethod.POST)
 	@Transactional
-	public String editUser(@ModelAttribute("use") Employee employee, BindingResult bindingResult, Model m) {
+	public String editUser(@ModelAttribute("emp") Employee employee, BindingResult bindingResult, Model m) {
+		
 		Employee emp = employee;
-		//m.addAttribute("checkDate", true);
+		emp.setEmployeeId(employeeService.findById(employeeService.findByEmailId(emp.getEmailId()).getEmployeeId()).get().getEmployeeId());
+		System.out.println(emp.getEmployeeId());
+		Company c = companyrepo.findByCompanyName(emp.getCompany().getCompanyName());
+		emp.setCompany(c);
+		
+		Designation d = desiRepo.findByDesignation(employee.getDesignation().getDesignation());
+		emp.setDesignation(d);
 		m.addAttribute("emp", emp);
-		empRepo.save(emp);
-		List<Employee> li = (List<Employee>) empRepo.findAll();
+		employeeService.addEmployee(employee);
+		List<Employee> li = (List<Employee>) employeeService.findAll();
 		m.addAttribute("employees", li);
 		return "employee/allEmployee";
 	}
 	
 	
 	
-	@RequestMapping(value="showEditEmployee",method=RequestMethod.POST,params={"action=delete"})
+/*	@RequestMapping(value="/showEditEmployee",method=RequestMethod.POST,params={"action=delete"})
 	public String deleteEmployee(@RequestParam("uId") long employeeId, Model m)
 	{
-		System.out.println("IN delete User " + empRepo);
-		empRepo.deleteById(employeeId); 
-		List<Employee> li = (List<Employee>) empRepo.findAll();
+		System.out.println("IN delete User " + employeeService);
+		employeerepo.deleteById(employeeId); 
+		List<Employee> li = (List<Employee>) employeeService.findAll();
 		m.addAttribute("employees", li);
 		return "employee/allEmployee";
+	}*/
+	
+	@RequestMapping(value="/showEditEmployee",method=RequestMethod.POST,params={"action=delete"})
+	public String deleteUser(@ModelAttribute("emp")Employee user,Model m,HttpServletRequest request)
+	{
+
+		System.out.println(user+"---------------------------");
+		employeerepo.delete(user);
+		request.getSession().setAttribute("emp",user);
+		return "redirect:/user/users";
 	}
 	
 	
@@ -156,7 +179,7 @@ public class EmployeeController {
 	@GetMapping("/employees")
 	public String showAllEmployee(Model m)
 	{
-		Iterable<Employee> li = empRepo.findAll();
+		Iterable<Employee> li = employeeService.findAll();
 
 		m.addAttribute("employees", li);
 		return "employee/allEmployee";
@@ -180,7 +203,7 @@ public class EmployeeController {
 	}
 	
 	 
-	@GetMapping("/add")
+	@GetMapping("/viewEmployeePage")
 	public String showAddUser(Model m,HttpSession s)
 	{
 		Employee e=new Employee();
@@ -196,24 +219,36 @@ public class EmployeeController {
 	}
 	
 	@PostMapping("/add")
-	public String SaveUser(@ModelAttribute("emp")@Valid Employee employee,BindingResult bindingResult,Model m)
+	public String SaveUser(@ModelAttribute("emp")@Valid Employee employee,BindingResult bindingResult,Model m,HttpServletRequest request,@RequestParam(name="company.companyName") String cName)
 	{
-		//employee.getDesignation().getDesignation();
 	
-		System.out.println(employee);
-		Designation d = employee.getDesignation();
+		//employee.setCompany(company);
+		System.out.println(employee);	 
+		System.out.println(cName);
 		Company c=employee.getCompany();
+		Designation d = employee.getDesignation();
+
+		System.out.println(c+"--------"+d);
 		d.setDesignationId(desiRepo.findByDesignation(employee.getDesignation().getDesignation()).getDesignationId());
 		c.setCompanyId(companyrepo.findByCompanyName(employee.getCompany().getCompanyName()).getCompanyId());
-		System.out.println(employee.getDesignation().getDesignation());
-		System.out.println(employee.getDesignation().getDesignationId());
-		//System.out.println(employee.getCompany().getCompanyId());
-		employee =  empRepo.save(employee);
-		Iterable<Employee> li = empRepo.findAll();
-		m.addAttribute("employee", li);
-		return "employee/allEmployee";
+		
+		employeeService.addEmployee(employee);
+		emailSendService.mailSendwhenUserAdd(employee);
+		m.addAttribute("emp",employee);
+		request.getSession().setAttribute("emp",employee);
+		return "redirect:/employee/allEmployee";
 		
 	}
+	
+	@GetMapping("/allEmployee")
+	public String viewAllEmployee(Model model,HttpServletRequest request)
+	{
+		Iterable<Employee> li = employeeService.findAll();
+		model.addAttribute("employees", li);
+		request.getSession().setAttribute("emp",li);
+		return "employee/allEmployee";
+	}
+	
 	@GetMapping("/logout")
 	public String logout(HttpSession s,Model m)
 	{

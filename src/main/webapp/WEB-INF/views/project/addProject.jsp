@@ -40,7 +40,7 @@
 			</tr>
 			<tr>
 				<td>Manager</td>
-				<td><input type="text" name="employee"  id="managerName" ><!-- readonly="readonly" value="${ sessionScope.employee.userName }"--> <span id="merror" style="color: red"></span><br />
+				<td><form:input type="text" path="employee.emailId"  id="managerName" /><!-- readonly="readonly" value="${ sessionScope.employee.userName }"--> <span id="merror" style="color: red"></span><br />
 				</td>
 			</tr>
 			<tr><td></td>
