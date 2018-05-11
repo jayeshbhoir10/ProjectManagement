@@ -3,6 +3,8 @@ package com.v2Technologies.project_management_system.Service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import com.v2Technologies.project_management_system.Repository.ProjectRepository
 import com.v2Technologies.project_management_system.entity.Project;
 
 @Service
+@Transactional
 public class ProjectServiceImpl implements ProjectService
 {
 	@Autowired
@@ -21,11 +24,11 @@ public class ProjectServiceImpl implements ProjectService
 		projectRepo.save(project);
 	}
 
-	@Override
+	/*@Override
 	public List<Project> findByProjectName(String projectName) {
 		// TODO Auto-generated method stub
 		return projectRepo.findByProjectName(projectName);
-	}
+	}*/
 
 	@Override
 	public List<Project> findAll() {
@@ -61,6 +64,12 @@ public class ProjectServiceImpl implements ProjectService
 	public void save(Project project) {
 		// TODO Auto-generated method stub
 		projectRepo.save(project);
+	}
+
+	@Override
+	public Project findByProjectName(String projectName) {
+		// TODO Auto-generated method stub
+		return projectRepo.findByProjectName(projectName);
 	}
 	
 

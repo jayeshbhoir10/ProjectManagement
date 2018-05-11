@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.v2Technologies.project_management_system.DTO.ProjectDTO;
 import com.v2Technologies.project_management_system.Service.EmailSendService;
 import com.v2Technologies.project_management_system.Service.ProjectService;
+import com.v2Technologies.project_management_system.entity.Employee;
 import com.v2Technologies.project_management_system.entity.Project;
 
 @Controller
@@ -64,6 +65,10 @@ public class ProjectController {
 	public String saveProject(@ModelAttribute ProjectDTO project,BindingResult bindingResult,Model m,HttpServletRequest request)
 	{
 		Project project2=project.getCurrent();
+		
+		Employee employee=project2.getEmployee();
+		
+		//employee.setEmployeeId(projectService.findByProjectName(project2.getEmployee().getEmailId()));
 		
 		String startDate=request.getParameter("projectStartDate");
 		if(startDate==null)
@@ -110,7 +115,7 @@ public class ProjectController {
 	@PostMapping("/search")
 	public String searchProjectByName(@RequestParam("searchName") String projectName,Model m)
 	{
-		List<Project> li=projectService.findByProjectName(projectName);
+		Project li=projectService.findByProjectName(projectName);
 		m.addAttribute("projects", li);
 		return "project/allProjects";
 	}

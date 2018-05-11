@@ -18,6 +18,7 @@ import com.v2Technologies.project_management_system.Repository.CompanyRepository
 import com.v2Technologies.project_management_system.Repository.EmployeeRepository;
 import com.v2Technologies.project_management_system.Repository.GeneralAdminRepository;
 import com.v2Technologies.project_management_system.Service.DesignationService;
+import com.v2Technologies.project_management_system.Service.EmployeeService;
 import com.v2Technologies.project_management_system.Service.GeneralAdminService;
 import com.v2Technologies.project_management_system.entity.Company;
 import com.v2Technologies.project_management_system.entity.Designation;
@@ -39,18 +40,22 @@ public class GeneralAdminController {
 	CompanyRepository crepo;
 	
 	@Autowired
+	EmployeeService employeeService; 
+	
+	@Autowired
 	DesignationService designationService;
 	
 	@Autowired
 	EmployeeRepository erepo;
 	
 	@GetMapping("/add")
-	public String showAddProject(Model m) {
-	
+	public String showAddProject(Model m)
+	{
+		System.out.println("hello");
 		Employee employee=new Employee();
 		
-		Company company=new Company();
-		Designation designation=new Designation();
+		/*Company company=new Company();
+		Designation designation=new Designation();*/
 		List<Company> li=crepo.findAll();
 		List<String> companyNames=new ArrayList<>();
 		
@@ -59,33 +64,25 @@ public class GeneralAdminController {
 			companyNames.add(c.getCompanyName());
 		}
 		
+		System.out.println(companyNames);
+		
 		List<Designation> designations=designationService.findAll();
 		List<String> designationNames=new ArrayList<>();
 		
 		for (Designation d : designations) 
 		{
-			designationNames.add(designation.getDesignation());
+			designationNames.add(d.getDesignation());
 		}
 		
+		System.out.println(designationNames);
 		m.addAttribute("employee", employee);
-	//m.addAttribute("destinations", designation);
-		//m.addAttribute("company", company);
 		m.addAttribute("designations", designationNames);
 		m.addAttribute("companyNames", companyNames);
 	
 		return "Home/home";
 	}
 	
-	/*@GetMapping("/addAdminCompany")
-	public String show(Model m) {
 	
-		
-		Company company=new Company();
-		m.addAttribute("company", company);
-		List<Company> li=crepo.findAll();
-		m.addAttribute("companyNames", li);
-		return "Home/home";
-	}*/
 
 	@GetMapping("/generalAdminLogin")
 	public String showLoginPage(Model m) {
@@ -97,6 +94,8 @@ public class GeneralAdminController {
 		return "company/GeneralAdminLogin";
 	}
 	
+	
+
 	
 	@PostMapping("/addAdminCompany")
 	public String checkAdminCredentials(@ModelAttribute GeneralAdmin generalAdmin,Company company, Model m)

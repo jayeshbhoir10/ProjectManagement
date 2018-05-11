@@ -8,7 +8,7 @@ import com.v2Technologies.project_management_system.entity.Project;
 public interface ProjectService
 {
 	public void addproject(Project project);
-	List<Project> findByProjectName(String projectName);
+	//List<Project> findByProjectName(String projectName);
 	
 	List<Project> findAll();
 	public List<Project> findAllByOrderByPriorityAsc();
@@ -16,4 +16,5 @@ public interface ProjectService
 	public List<Project> findAllByOrderByProjectEndDateAsc();
 	Optional<Project> findById(long projectId);
 	public void save(Project project);
+	Project findByProjectName(String projectName);
 }

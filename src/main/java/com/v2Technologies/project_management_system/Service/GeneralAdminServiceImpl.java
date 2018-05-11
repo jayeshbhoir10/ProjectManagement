@@ -1,5 +1,7 @@
 package com.v2Technologies.project_management_system.Service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +9,7 @@ import com.v2Technologies.project_management_system.Repository.GeneralAdminRepos
 import com.v2Technologies.project_management_system.entity.GeneralAdmin;
 
 @Service
+@Transactional
 public class GeneralAdminServiceImpl implements GeneralAdminService
 {
 

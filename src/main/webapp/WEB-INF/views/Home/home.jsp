@@ -7,15 +7,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Home</title>
 </head>
 <body>
-	<spring:url value="/comapny/add" var="companyEmployeeloginUrl" />
-	<form:form modelAttribute="employee" action="${ companyEmployeeloginUrl }">
+
 		<center>
 			<h1>PROJECT MANAGEMENT SYSTEM</h1>
 			
-			<a href="/company/generalAdminLogin"><input type="button" value="General Admin"></a>
+			<a href="/company/companyAdminLogin"><input type="button" value="General Admin"></a>
 			<span style="padding-left:20px"><a href="/company/companyAdminLogin"><input type="button" value="Company Admin"></a></span>
 		</center>
 		<table border="1" align="center">
@@ -24,6 +23,8 @@
 				<td><a href="/company/generalAdminLogin"></a></td>
 			</tr> -->
 		</table>
+	<spring:url value="/employee/companyEmployeeLogin" var="companyEmployeeloginUrl" />
+	<form:form modelAttribute="employee" action="${ companyEmployeeloginUrl }" method="post">
 		<br>
 		<br>
 		<h3 align="center">Login For Company</h3>
@@ -37,8 +38,8 @@
 			</tr>
 
 			<tr>
-				<td>Employee Name</td>
-				<td><form:input path="employeeName" id="adminName" type="text"
+				<td>Employee EmailId</td>
+				<td><form:input path="emailId" id="adminName" type="text"
 						onblur="addUser()" /> <span id="fnerror" style="color: red"></span></td>
 			</tr>
 			<tr>
@@ -46,13 +47,13 @@
 				<td><form:input type="password" path="password" /></td>
 
 			</tr>
-			<%-- <tr>
+			<tr>
 				<td>Role</td>
 				<td><form:select id="designations" path="designation.designation">
 						<form:options items="${designations}" />
 					</form:select></td>
 			</tr>
- --%>
+
 			<tr align="center"><td></td><td>
 				<input type="submit" name="Login">
 				<input type="reset" name="Reset"></td>

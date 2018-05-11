@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.v2Technologies.project_management_system.entity.Company;
+import com.v2Technologies.project_management_system.entity.Designation;
 import com.v2Technologies.project_management_system.entity.Employee;
 
 public interface EmployeeService
@@ -15,6 +17,6 @@ public interface EmployeeService
 	Employee findByEmailId(String emailId);
 	Optional<Employee> findById(Long id);
 	//public void deleteById(Long Id);
-	
+	public Employee findByCompanyAndEmailIdAndPasswordAndDesignation(Company company,String emailId,String password,Designation designation);
 	
 }

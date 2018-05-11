@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.jboss.logging.MessageLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,17 +119,19 @@ public class EmployeeController {
 		return "employee/allEmployee";
 	}
 	
-	
-	
-/*	@RequestMapping(value="/showEditEmployee",method=RequestMethod.POST,params={"action=delete"})
-	public String deleteEmployee(@RequestParam("uId") long employeeId, Model m)
+
+	@PostMapping("/companyEmployeeLogin")
+	public String companyEmployeeLogin(Model model,@ModelAttribute("employee")@Valid Employee employee,BindingResult bindingResult)
 	{
-		System.out.println("IN delete User " + employeeService);
-		employeerepo.deleteById(employeeId); 
-		List<Employee> li = (List<Employee>) employeeService.findAll();
-		m.addAttribute("employees", li);
-		return "employee/allEmployee";
-	}*/
+		Company company=companyrepo.findByCompanyName(employee.getCompany().getCompanyName());
+		Designation designation=desiRepo.findByDesignation(employee.getDesignation().getDesignation());
+		Employee employees=employeeService.findByCompanyAndEmailIdAndPasswordAndDesignation(company,employee.getEmailId(),employee.getPassword(),designation);;
+		System.out.println(employee.getCompany()+employee.getEmailId()+employee.getPassword()+employee.getDesignation()+employee.getCompany());
+		model.addAttribute("employee",employees);
+		return "/Home/projectManagerMenu";
+	}
+	
+
 	
 	@RequestMapping(value="/showEditEmployee",method=RequestMethod.POST,params={"action=delete"})
 	public String deleteUser(@ModelAttribute("emp")Employee user,Model m,HttpServletRequest request)
@@ -239,6 +242,8 @@ public class EmployeeController {
 		return "redirect:/employee/allEmployee";
 		
 	}
+	
+
 	
 	@GetMapping("/allEmployee")
 	public String viewAllEmployee(Model model,HttpServletRequest request)

@@ -10,7 +10,7 @@ import com.v2Technologies.project_management_system.entity.Project;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project,java.lang.Long>
 {
-	List<Project> findByProjectName(String projectName);
+	Project findByProjectName(String projectName);
 	public List<Project> findAllByOrderByPriorityAsc();
 	public List<Project> findAllByOrderByProjectStartDateAsc();
 	public List<Project> findAllByOrderByProjectEndDateAsc();

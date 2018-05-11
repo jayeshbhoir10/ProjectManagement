@@ -19,9 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.v2Technologies.project_management_system.DTO.TaskDTO;
+import com.v2Technologies.project_management_system.Service.EmailSendService;
 import com.v2Technologies.project_management_system.Service.EmployeeService;
 import com.v2Technologies.project_management_system.Service.ProjectService;
 import com.v2Technologies.project_management_system.Service.TaskService;
@@ -41,6 +40,9 @@ public class TaskController
 	
 	@Autowired
 	private TaskService taskService;
+	
+	@Autowired
+	EmailSendService emailSendService;
 	
 	@GetMapping("/viewTask")
 	public String viewTaskPage(Model model)
@@ -72,41 +74,35 @@ public class TaskController
 	}
 	
 	@PostMapping("/addTask")
-	public String addTask(@ModelAttribute("task") TaskDTO taskDTO,BindingResult bindingResult,Model model,HttpServletRequest request)
+	public String addTask(@ModelAttribute("task") Task task,BindingResult bindingResult,Model model,HttpServletRequest request)
 	{
 		
+		Project p = projectService.findByProjectName(task.getAssignProject().getProjectName());
+		task.setAssignProject(p);
 		
-		//System.out.println(emailId);
-		Task task=taskDTO.getCurrenttask();
+		Employee employee=employeeService.findByEmailId(task.getEmployee().getEmailId());
+		task.setEmployee(employee);
 		
-
 		
-		task.setAssignProject(taskDTO.getProject());
-		
-		task.setTaskName(taskDTO.getTaskName());
-	
 		String taskStartDate=request.getParameter("taskStartDate");
 		if(taskStartDate==null)
 		{
-			taskStartDate=convertDateToString(taskDTO.getTaskStartDate());
+			taskStartDate=convertDateToString(task.getTaskStartDate());
 		}
-		taskDTO.setTaskStartDate(convertDate(taskStartDate));
-		task.setTaskStartDate(taskDTO.getTaskStartDate());
+		task.setTaskStartDate(convertDate(taskStartDate));
 		
 		String taskEndDate=request.getParameter("taskEndDate");
 		if(taskEndDate==null)
 		{
-			taskEndDate=convertDateToString(taskDTO.getTaskEndDate());
+			taskEndDate=convertDateToString(task.getTaskEndDate());
 		}
-		taskDTO.setTaskEndDate(convertDate(taskEndDate));
-		task.setTaskEndDate(taskDTO.getTaskEndDate());
+		task.setTaskEndDate(convertDate(taskEndDate));
 		
-		System.out.println(taskStartDate+taskEndDate);
-		task.setPriority(taskDTO.getPriority());
-		task.setEmployee(taskDTO.getEmployee());
+		System.out.println(taskEndDate+"--"+taskStartDate);
 		
 		System.out.println(task);
 		taskService.addTask(task);
+		emailSendService.mailSendWhenTaskAdd(task);
 		model.addAttribute("task",task);
 		return "redirect:/task/viewAllTask";
 	}
