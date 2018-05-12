@@ -36,7 +36,7 @@ import com.v2Technologies.project_management_system.entity.Employee;
 
 @Controller
 @RequestMapping("/employee")
-@SessionAttributes("company")
+@SessionAttributes("employee")
 public class EmployeeController {
 	
 	@Autowired
@@ -121,22 +121,27 @@ public class EmployeeController {
 	
 
 	@PostMapping("/companyEmployeeLogin")
-	public String companyEmployeeLogin(Model model,@ModelAttribute("employee")@Valid Employee employee,BindingResult bindingResult)
+	public String companyEmployeeLogin(Model model,@ModelAttribute("employee")@Valid Employee employee,BindingResult bindingResult,HttpSession session)
 	{
 		Company company=companyrepo.findByCompanyName(employee.getCompany().getCompanyName());
+		employee.setCompany(company);
+		
 		Designation designation=desiRepo.findByDesignation(employee.getDesignation().getDesignation());
-		Employee employees=employeeService.findByCompanyAndEmailIdAndPasswordAndDesignation(company,employee.getEmailId(),employee.getPassword(),designation);;
-		System.out.println(employee.getCompany()+employee.getEmailId()+employee.getPassword()+employee.getDesignation()+employee.getCompany());
-		model.addAttribute("employee",employees);
-		return "/Home/projectManagerMenu";
+		employee.setDesignation(designation);
+		
+		Employee employees=employeeService.findByCompanyAndEmailIdAndPasswordAndDesignation(company,employee.getEmailId(),employee.getPassword(),designation);
+		if(employees!=null)
+		{
+			System.out.println(company+"-"+employee.getEmailId()+"-"+employee.getPassword()+"-"+employee.getDesignation()+"-"+designation);
+			model.addAttribute("employee",employees);
+			return "/Home/projectManagerMenu";
+		}
+		return "redirect:/company/add";
 	}
-	
-
 	
 	@RequestMapping(value="/showEditEmployee",method=RequestMethod.POST,params={"action=delete"})
 	public String deleteUser(@ModelAttribute("emp")Employee user,Model m,HttpServletRequest request)
 	{
-
 		System.out.println(user+"---------------------------");
 		employeerepo.delete(user);
 		request.getSession().setAttribute("emp",user);

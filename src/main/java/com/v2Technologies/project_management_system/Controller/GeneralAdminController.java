@@ -29,7 +29,7 @@ import com.v2Technologies.project_management_system.entity.GeneralAdmin;
 
 @Controller
 @RequestMapping("/company")
-@SessionAttributes("company")
+@SessionAttributes("employee")
 public class GeneralAdminController {
 	
 	

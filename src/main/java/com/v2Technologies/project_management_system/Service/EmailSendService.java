@@ -32,4 +32,13 @@ public class EmailSendService
 		mailMail.sendMail(from,task.getEmployee().getEmailId(), subject, msg);
 		System.out.println("Success");
 	}
+	
+	public void mailSendWhenProjectAdd(Project project)
+	{
+		String from="pratik.gholap@thev2technologies.com";
+		String subject="You Are assign for Project:-"+project.getProjectName();
+		String msg="Date for completion of Project:-"+project.getProjectEndDate();
+		mailMail.sendMail(from,project.getEmployee().getEmailId(), subject, msg);
+		System.out.println("Success");
+	}
 }

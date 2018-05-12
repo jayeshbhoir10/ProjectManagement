@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ page session="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -14,7 +15,7 @@
 		<center>
 			<h1>PROJECT MANAGEMENT SYSTEM</h1>
 			
-			<a href="/company/companyAdminLogin"><input type="button" value="General Admin"></a>
+			<a href="/company/generalAdminLogin"><input type="button" value="General Admin"></a>
 			<span style="padding-left:20px"><a href="/company/companyAdminLogin"><input type="button" value="Company Admin"></a></span>
 		</center>
 		<table border="1" align="center">
@@ -31,7 +32,7 @@
 		<table border="1" align="center" cellpadding="5" cellspacing="5">
 			<tr>
 				<td>Company Name:</td>
-				<td><form:select id="companyName" path="company">
+				<td><form:select id="companyName" path="company.companyName">
 						<form:options items="${companyNames}" />
 					</form:select></td>
 

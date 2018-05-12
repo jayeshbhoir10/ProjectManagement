@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.v2Technologies.project_management_system.DTO.ProjectDTO;
 import com.v2Technologies.project_management_system.Service.EmailSendService;
+import com.v2Technologies.project_management_system.Service.EmployeeService;
 import com.v2Technologies.project_management_system.Service.ProjectService;
 import com.v2Technologies.project_management_system.entity.Employee;
 import com.v2Technologies.project_management_system.entity.Project;
@@ -40,11 +42,14 @@ public class ProjectController {
 	ProjectService projectService;
 	
 	@Autowired
-	EmailSendService emailSendController;
+	EmailSendService emailSendService;
+	
+	@Autowired
+	EmployeeService emailService;
 	
 	
 	@GetMapping("project")
-	public String showProjectScreen(Model m)
+	public String showProjectScreen(Model m,HttpSession session)
 	{
 		Project p=new Project();
 		m.addAttribute("project", p);
@@ -62,13 +67,12 @@ public class ProjectController {
 	}
 
 	@PostMapping("/add")
-	public String saveProject(@ModelAttribute ProjectDTO project,BindingResult bindingResult,Model m,HttpServletRequest request)
+	public String saveProject(@ModelAttribute Project project,BindingResult bindingResult,Model m,HttpServletRequest request)
 	{
-		Project project2=project.getCurrent();
-		
-		Employee employee=project2.getEmployee();
 		
 		//employee.setEmployeeId(projectService.findByProjectName(project2.getEmployee().getEmailId()));
+		Employee employee=emailService.findByEmailId(project.getEmployee().getEmailId());
+		project.setEmployee(employee);
 		
 		String startDate=request.getParameter("projectStartDate");
 		if(startDate==null)
@@ -76,7 +80,7 @@ public class ProjectController {
 			startDate=convertDateToString(project.getProjectStartDate());
 		}
 		project.setProjectStartDate(convertDate(startDate));
-		project2.setProjectStartDate(project.getProjectStartDate());
+		
 	
 		String endDate=request.getParameter("projectEndDate");
 		if(endDate==null)
@@ -84,15 +88,11 @@ public class ProjectController {
 			endDate=convertDateToString(project.getProjectEndDate());
 		}
 		project.setProjectEndDate(convertDate(endDate));
-		project2.setProjectEndDate(project.getProjectEndDate());
 		
-		project2.setProjectName(project.getProjectName());
-		project2.setPriority(project.getPriority());
-		project2.getEmployee().setEmailId(project.getEmployee().getEmailId());
+		System.out.println(project);
 		
-		System.out.println(project2);
-		
-		projectService.addproject(project2);
+		projectService.addproject(project);
+		emailSendService.mailSendWhenProjectAdd(project);
 		
 		//emailSendController.mailSendWhenProjectAdd(project2.getEmployee().getEmailId(), project2);
 		

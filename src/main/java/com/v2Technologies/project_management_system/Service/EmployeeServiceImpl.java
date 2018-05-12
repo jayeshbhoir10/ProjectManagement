@@ -54,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService
 	public Employee findByCompanyAndEmailIdAndPasswordAndDesignation(Company company, String emailId, String password,
 			Designation designation) {
 		// TODO Auto-generated method stub
-		return null;
+		return employeerepo.findByCompanyAndEmailIdAndPasswordAndDesignation(company, emailId, password, designation);
 	}
 
 	
